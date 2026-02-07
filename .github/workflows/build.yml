@@ -1,0 +1,94 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+        
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug
+      
+    - name: Build Release APK
+      run: ./gradlew assembleRelease
+      
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: sms-forwarder-debug
+        path: app/build/outputs/apk/debug/*.apk
+        
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: sms-forwarder-release
+        path: app/build/outputs/apk/release/*.apk
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+        
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build Release APK
+      run: ./gradlew assembleRelease
+      
+    - name: Get version
+      id: version
+      run: |
+        VERSION=$(grep "versionName" app/build.gradle | awk -F'"' '{print $2}')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        name: 短信转发助手 v${{ steps.version.outputs.version }}
+        body: |
+          ## 短信转发助手
+          
+          ### 功能
+          - 自动转发包含特定关键词的短信到服务器
+          - 支持拼多多验证码自动转发
+          
+          ### 安装
+          1. 下载下方的 APK 文件
+          2. 在手机上安装（需要允许安装未知来源应用）
+          3. 打开应用，添加转发规则
+        files: app/build/outputs/apk/release/*.apk
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
