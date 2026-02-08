@@ -48,6 +48,17 @@ public class ListAdapter extends ArrayAdapter<ForwardingConfig> {
         TextView url = row.findViewById(R.id.text_url);
         url.setText(config.getUrl());
 
+        // 显示本机手机号
+        TextView receivePhone = row.findViewById(R.id.text_receive_phone);
+        String phoneText = config.getReceivePhone();
+        if (phoneText == null || phoneText.isEmpty()) {
+            receivePhone.setText("未设置");
+            receivePhone.setTextColor(0xFFFF5722);
+        } else {
+            receivePhone.setText(phoneText);
+            receivePhone.setTextColor(0xFF000000);
+        }
+
         // 显示内容过滤关键词
         TextView contentFilter = row.findViewById(R.id.text_content_filter);
         String filterText = config.getContentFilter();

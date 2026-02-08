@@ -90,6 +90,37 @@
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="16dp"
+            android:labelFor="@+id/input_receive_phone"
+            android:text="@string/label_receive_phone" />
+
+        <EditText
+            android:id="@+id/input_receive_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="4dp"
+            android:hint="@string/hint_receive_phone"
+            android:inputType="phone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="-4dp"
+            android:text="@string/receive_phone_recommendation"
+            android:textSize="10sp"
+            android:textColor="#E65100" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="16dp"
             android:labelFor="@+id/input_phone"
             android:text="@string/label_url" />
 

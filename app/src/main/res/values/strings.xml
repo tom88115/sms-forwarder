@@ -21,6 +21,10 @@
     <string name="label_content_filter">内容关键词过滤</string>
     <string name="hint_content_filter">例如：拼多多（留空表示不过滤）</string>
     <string name="content_filter_recommendation">提示：只有短信内容包含此关键词时才会转发</string>
+    <string name="label_receive_phone">本机手机号</string>
+    <string name="hint_receive_phone">请输入此手机接收短信的号码</string>
+    <string name="receive_phone_recommendation">必填：用于标识验证码属于哪个手机号，支持并发登录验证码匹配</string>
+    <string name="error_empty_receive_phone">请输入本机手机号</string>
     <string name="label_number_retries">重试次数</string>
     <string name="label_sender">发送者</string>
     <string name="label_url">服务器地址</string>
@@ -31,7 +35,7 @@
     <string name="label_chunked_mode">分块传输模式</string>
     <string name="hint_sender">号码、关键词或 * 表示全部</string>
     <string name="sender_recommendation">提示：输入 * 接收所有短信，输入 106 只接收以106开头的验证码</string>
-    <string name="json_template_recommendation">可用变量：%text%(内容) %from%(发送者) %sentStamp%(发送时间) %receivedStamp%(接收时间) %sim%(卡槽)</string>
+    <string name="json_template_recommendation">可用变量：%text%(内容) %from%(发送者) %sentStamp%(发送时间) %receivedStamp%(接收时间) %sim%(卡槽) %receivePhone%(本机手机号)</string>
     <string name="error_empty_sender">请输入发送者</string>
     <string name="error_empty_url">请输入服务器地址</string>
     <string name="error_wrong_url">服务器地址格式错误</string>

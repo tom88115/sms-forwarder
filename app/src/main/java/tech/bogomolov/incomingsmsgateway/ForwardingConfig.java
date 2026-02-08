@@ -27,6 +27,7 @@ public class ForwardingConfig {
     private static final String KEY_CHUNKED_MODE = "chunked_mode";
     private static final String KEY_IS_SMS_ENABLED = "is_sms_enabled";
     private static final String KEY_CONTENT_FILTER = "content_filter";
+    private static final String KEY_RECEIVE_PHONE = "receive_phone";
 
     private String key;
     private String sender;
@@ -39,6 +40,7 @@ public class ForwardingConfig {
     private boolean chunkedMode = true;
     private boolean isSmsEnabled = true;
     private String contentFilter = ""; // 内容过滤关键词，为空表示不过滤
+    private String receivePhone = ""; // 本机接收短信的手机号
 
     public ForwardingConfig(Context context) {
         this.context = context;
@@ -132,6 +134,14 @@ public class ForwardingConfig {
         this.contentFilter = contentFilter != null ? contentFilter : "";
     }
 
+    public String getReceivePhone() {
+        return this.receivePhone;
+    }
+
+    public void setReceivePhone(String receivePhone) {
+        this.receivePhone = receivePhone != null ? receivePhone : "";
+    }
+
     // 检查短信内容是否匹配过滤规则
     public boolean matchesContent(String content) {
         if (this.contentFilter == null || this.contentFilter.isEmpty()) {
@@ -141,7 +151,7 @@ public class ForwardingConfig {
     }
 
     public static String getDefaultJsonTemplate() {
-        return "{\n  \"from\":\"%from%\",\n  \"text\":\"%text%\",\n  \"sentStamp\":%sentStamp%,\n  \"receivedStamp\":%receivedStamp%,\n  \"sim\":\"%sim%\"\n}";
+        return "{\n  \"from\":\"%from%\",\n  \"text\":\"%text%\",\n  \"sentStamp\":%sentStamp%,\n  \"receivedStamp\":%receivedStamp%,\n  \"sim\":\"%sim%\",\n  \"receivePhone\":\"%receivePhone%\"\n}";
     }
 
     public static String getDefaultJsonHeaders() {
@@ -170,6 +180,7 @@ public class ForwardingConfig {
             json.put(KEY_CHUNKED_MODE, this.chunkedMode);
             json.put(KEY_IS_SMS_ENABLED, this.isSmsEnabled);
             json.put(KEY_CONTENT_FILTER, this.contentFilter);
+            json.put(KEY_RECEIVE_PHONE, this.receivePhone);
 
             SharedPreferences.Editor editor = getEditor(context);
             editor.putString(this.getKey(), json.toString());
@@ -234,6 +245,12 @@ public class ForwardingConfig {
                         config.setContentFilter("");
                     }
 
+                    if (json.has(KEY_RECEIVE_PHONE)) {
+                        config.setReceivePhone(json.getString(KEY_RECEIVE_PHONE));
+                    } else {
+                        config.setReceivePhone("");
+                    }
+
                     try {
                         config.setIgnoreSsl(json.getBoolean(KEY_IGNORE_SSL));
                         config.setChunkedMode(json.getBoolean(KEY_CHUNKED_MODE));
@@ -266,6 +283,7 @@ public class ForwardingConfig {
                 .replaceAll("%sentStamp%", String.valueOf(timeStamp))
                 .replaceAll("%receivedStamp%", String.valueOf(System.currentTimeMillis()))
                 .replaceAll("%sim%", sim)
+                .replaceAll("%receivePhone%", Matcher.quoteReplacement(this.receivePhone != null ? this.receivePhone : ""))
                 .replaceAll("%text%",
                         Matcher.quoteReplacement(StringEscapeUtils.escapeJson(content)));
     }

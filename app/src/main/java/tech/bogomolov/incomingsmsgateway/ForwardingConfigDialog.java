@@ -103,6 +103,9 @@ public class ForwardingConfigDialog {
         final EditText contentFilterInput = view.findViewById(R.id.input_content_filter);
         contentFilterInput.setText(config.getContentFilter());
 
+        final EditText receivePhoneInput = view.findViewById(R.id.input_receive_phone);
+        receivePhoneInput.setText(config.getReceivePhone());
+
         final EditText urlInput = view.findViewById(R.id.input_url);
         urlInput.setText(config.getUrl());
 
@@ -210,8 +213,17 @@ public class ForwardingConfigDialog {
         final EditText contentFilterInput = view.findViewById(R.id.input_content_filter);
         String contentFilter = contentFilterInput.getText().toString();
 
+        // 获取本机手机号（必填）
+        final EditText receivePhoneInput = view.findViewById(R.id.input_receive_phone);
+        String receivePhone = receivePhoneInput.getText().toString();
+        if (TextUtils.isEmpty(receivePhone)) {
+            receivePhoneInput.setError(context.getString(R.string.error_empty_receive_phone));
+            return null;
+        }
+
         config.setSender(sender);
         config.setContentFilter(contentFilter);
+        config.setReceivePhone(receivePhone);
         config.setUrl(url);
         config.setTemplate(template);
         config.setHeaders(headers);

@@ -88,6 +88,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text="本机手机号"
+        android:textSize="12sp"
+        android:textColor="#666" />
+
+    <TextView
+        android:id="@+id/text_receive_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="14sp"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="服务器地址"
         android:textSize="12sp"
         android:textColor="#666" />
